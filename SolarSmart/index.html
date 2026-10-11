@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08110f" />
+  <meta name="description" content="SolarSmart — interactive solar PV performance and energy analysis simulator." />
+  <title>SolarSmart | Renewable Energy Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="SolarSmart home">
+        <span class="brand-mark"><i class="sun-core"></i></span>
+        <span class="brand-copy">solar<span>smart</span><small>ENERGY INTELLIGENCE</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <a class="nav-link active" href="#overview"><span class="nav-icon">▦</span> Overview</a>
+        <a class="nav-link" href="#solar-calculator"><span class="nav-icon">☼</span> Solar calculator</a>
+        <a class="nav-link" href="#performance"><span class="nav-icon">⌁</span> Performance</a>
+        <a class="nav-link" href="#mppt"><span class="nav-icon">↗</span> MPPT simulator</a>
+        <a class="nav-link" href="#energy-analyzer"><span class="nav-icon">ϟ</span> Energy analyzer</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-status"><span class="pulse-dot"></span><span>Simulation engine online</span></div>
+        <div class="sidebar-note">EDUCATIONAL SIMULATOR<br><span>Values are model estimates, not live sensor data.</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageName">Overview</strong></div>
+        <div class="topbar-right"><span class="status-pill"><span class="pulse-dot"></span> System ready</span><span class="avatar">SS</span></div>
+      </header>
+
+      <section class="page-heading" id="overview">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> RENEWABLE ENERGY ANALYTICS</div>
+          <h1>Solar energy,<br><span>made measurable.</span></h1>
+          <p class="subheading">Explore solar PV output, operating conditions, and household energy balance in one interactive workspace.</p>
+        </div>
+        <div class="date-chip"><span class="sun-small">☼</span><div><strong>SolarSmart Simulator</strong><small>Scenario-based analysis</small></div></div>
+      </section>
+
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <div class="hero-tag"><span class="hero-tag-dot"></span> SOLAR PV SYSTEM MODEL</div>
+          <h2>Turn sunlight<br>into <em>insight.</em></h2>
+          <p>Adjust solar conditions and instantly see how they influence estimated generation and your energy demand.</p>
+          <a class="primary-button" href="#solar-calculator">Explore solar model <span>↗</span></a>
+        </div>
+        <div class="hero-visual" aria-label="Illustration of solar panels and sunlight">
+          <div class="orb orb-one"></div><div class="orb orb-two"></div>
+          <div class="sun-glow"><div class="sun-disc"></div></div>
+          <div class="solar-horizon"></div>
+          <div class="panel-scene">
+            <div class="panel panel-back"></div>
+            <div class="panel panel-front"><div class="panel-grid"></div></div>
+            <div class="panel-leg leg-one"></div><div class="panel-leg leg-two"></div>
+          </div>
+          <div class="visual-label label-left"><span class="label-pip"></span><div><small>ARRAY CAPACITY</small><strong id="heroCapacity">4.0 kW</strong></div></div>
+          <div class="visual-label label-right"><span class="label-pip green"></span><div><small>EST. DAILY ENERGY</small><strong id="heroDaily">16.0 kWh</strong></div></div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="overviewStatsTitle">
+        <div class="section-title-row"><div><div class="eyebrow">AT A GLANCE</div><h2 id="overviewStatsTitle">Your energy snapshot</h2></div><span class="muted-label">UPDATES WITH YOUR INPUTS</span></div>
+        <div class="stat-grid">
+          <article class="stat-card"><div class="stat-top"><span>Estimated PV power</span><span class="stat-icon green-icon">ϟ</span></div><div class="stat-value" id="statPower">2.89 <small>kW</small></div><div class="stat-foot"><span class="trend-up">↗</span> Current operating estimate</div><div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Daily energy estimate</span><span class="stat-icon blue-icon">◷</span></div><div class="stat-value" id="statEnergy">16.0 <small>kWh</small></div><div class="stat-foot"><span class="neutral-dot"></span> Based on peak-sun hours</div><div class="stat-line"><span id="energyProgress" style="width:70%"></span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>PV conversion efficiency</span><span class="stat-icon gold-icon">％</span></div><div class="stat-value" id="statEfficiency">18.0<small>%</small></div><div class="stat-foot">Panel-area based estimate</div><div class="stat-line gold-line"><span id="efficiencyProgress" style="width:72%"></span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Solar demand coverage</span><span class="stat-icon purple-icon">⌂</span></div><div class="stat-value" id="statCoverage">100<small>%</small></div><div class="stat-foot" id="coverageFoot">Estimated daily energy balance</div><div class="stat-line purple-line"><span id="coverageProgress" style="width:100%"></span></div></article>
+        </div>
+      </section>
+
+      <section class="section-block two-column" id="solar-calculator">
+        <article class="panel-card calculator-card">
+          <div class="card-heading"><div><div class="eyebrow">01 / INPUT PARAMETERS</div><h2>Solar PV calculator</h2></div><span class="live-badge"><span class="pulse-dot"></span> Interactive</span></div>
+          <p class="card-description">Tune the system inputs. Results recalculate automatically using a simplified performance model.</p>
+          <div class="input-group">
+            <div class="input-label"><label for="capacity">Array rated capacity</label><strong><span id="capacityValue">4.0</span> <small>kW</small></strong></div>
+            <input type="range" id="capacity" min="0.5" max="20" step="0.5" value="4" />
+            <div class="range-ends"><span>0.5 kW</span><span>20 kW</span></div>
+          </div>
+          <div class="input-group">
+            <div class="input-label"><label for="irradiance">Solar irradiance</label><strong><span id="irradianceValue">800</span> <small>W/m²</small></strong></div>
+            <input type="range" id="irradiance" min="100" max="1100" step="25" value="800" />
+            <div class="range-ends"><span>Low sunlight</span><span>Strong sunlight</span></div>
+          </div>
+          <div class="input-group">
+            <div class="input-label"><label for="temperature">PV cell temperature</label><strong><span id="temperatureValue">35</span><small> °C</small></strong></div>
+            <input type="range" id="temperature" min="0" max="75" step="1" value="35" />
+            <div class="range-ends"><span>0°C</span><span>75°C</span></div>
+          </div>
+          <div class="input-group">
+            <div class="input-label"><label for="losses">Other system performance factor</label><strong><span id="lossesValue">95</span><small>%</small></strong></div>
+            <input type="range" id="losses" min="60" max="100" step="1" value="95" />
+            <div class="range-ends"><span>60%</span><span>100%</span></div>
+          </div>
+          <div class="input-group">
+            <div class="input-label"><label for="sunHours">Equivalent peak-sun hours</label><strong><span id="sunHoursValue">5.0</span><small> h/day</small></strong></div>
+            <input type="range" id="sunHours" min="1" max="8" step="0.5" value="5" />
+            <div class="range-ends"><span>1 hour</span><span>8 hours</span></div>
+          </div>
+          <div class="form-note"><span>ⓘ</span> The temperature correction uses a typical crystalline-silicon coefficient of −0.4%/°C relative to 25°C. The model is illustrative.</div>
+          <button class="secondary-button full-button" id="resetButton">↺ Reset default values</button>
+        </article>
+
+        <article class="panel-card results-card">
+          <div class="card-heading"><div><div class="eyebrow">02 / MODEL OUTPUT</div><h2>Performance results</h2></div><span class="result-symbol">↗</span></div>
+          <div class="result-highlight"><div><span class="result-label">ESTIMATED CURRENT PV POWER</span><div class="big-result" id="resultPower">2.89 <small>kW</small></div><p id="powerExplanation">72.2% of rated array capacity</p></div><div class="power-ring" id="powerRing"><span id="ringPercent">72%</span><small>of rated</small></div></div>
+          <div class="result-list">
+            <div><span>Temperature correction</span><strong id="temperatureFactor">96.0%</strong></div>
+            <div><span>Combined output factor</span><strong id="combinedFactor">72.2%</strong></div>
+            <div><span>Estimated daily energy</span><strong id="resultDaily">16.0 kWh</strong></div>
+            <div><span>Estimated panel area <i class="info-dot" title="Assumes 20% module efficiency for this area estimate">i</i></span><strong id="panelArea">20.0 m²</strong></div>
+          </div>
+          <div class="result-callout"><span class="callout-icon">✦</span><p id="resultInsight">At these settings, your simulated array can produce an estimated 16.0 kWh on a typical modeled day.</p></div>
+        </article>
+      </section>
+
+      <section class="section-block two-column" id="performance">
+        <article class="panel-card chart-card">
+          <div class="card-heading"><div><div class="eyebrow">03 / GENERATION PROFILE</div><h2>Solar output across the day</h2></div><span class="chart-unit">kW</span></div>
+          <p class="card-description">A modeled clear-day profile scaled to the selected array and operating conditions.</p>
+          <div class="chart-wrap"><canvas id="dailyChart" aria-label="Estimated solar power by time of day"></canvas></div>
+          <div class="chart-summary"><span><i class="legend-dot"></i> Estimated PV output</span><strong id="peakOutput">Peak 2.89 kW</strong></div>
+        </article>
+        <article class="panel-card chart-card">
+          <div class="card-heading"><div><div class="eyebrow">04 / CONDITION ANALYSIS</div><h2>Sunlight vs output</h2></div><span class="chart-unit">kW</span></div>
+          <p class="card-description">See the approximate relationship between irradiance and array power.</p>
+          <div class="chart-wrap"><canvas id="irradianceChart" aria-label="Estimated solar power at different irradiance levels"></canvas></div>
+          <div class="chart-summary"><span><i class="legend-dot blue-legend"></i> Modeled power</span><strong id="irradianceSummary">At 800 W/m²: 2.89 kW</strong></div>
+        </article>
+      </section>
+
+      <section class="section-block" id="mppt">
+        <div class="section-title-row"><div><div class="eyebrow">05 / POWER OPTIMIZATION</div><h2>MPPT simulator</h2><p class="section-subtitle">Explore the maximum power point on an illustrative PV curve.</p></div><span class="muted-label">SIMULATED I–V / P–V CHARACTERISTICS</span></div>
+        <div class="mppt-layout">
+          <article class="panel-card mppt-controls">
+            <div class="card-heading"><div><h3>Operating conditions</h3></div><span class="stat-icon green-icon">ϟ</span></div>
+            <p class="card-description">Change the operating voltage to see why the maximum power point matters.</p>
+            <div class="input-group">
+              <div class="input-label"><label for="voltage">Operating voltage</label><strong><span id="voltageValue">30</span><small> V</small></strong></div>
+              <input type="range" id="voltage" min="1" max="50" step="0.5" value="30" />
+              <div class="range-ends"><span>1 V</span><span>50 V</span></div>
+            </div>
+            <div class="mppt-reading"><span>Modeled operating power</span><strong id="operatingPower">— W</strong></div>
+            <div class="mppt-reading"><span>Maximum power point</span><strong id="mppPower">— W</strong></div>
+            <div class="mppt-reading"><span>Power difference</span><strong id="mppDifference">— %</strong></div>
+            <button class="primary-button full-button" id="trackMpp">Move to maximum power point <span>↗</span></button>
+            <p class="tiny-note">This is a normalized educational curve, not a datasheet-validated model of a specific panel.</p>
+          </article>
+          <article class="panel-card chart-card mppt-chart-card">
+            <div class="card-heading"><div><div class="eyebrow">POWER-VOLTAGE CURVE</div><h3>Find the sweet spot</h3></div><span class="live-badge">P–V curve</span></div>
+            <div class="chart-wrap mppt-chart-wrap"><canvas id="mpptChart" aria-label="Illustrative power voltage curve with maximum power point"></canvas></div>
+            <div class="mpp-legend"><span><i class="legend-dot"></i> PV power curve</span><span><i class="legend-dot gold-legend"></i> Current operating point</span><span><i class="legend-dot blue-legend"></i> Maximum power point</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block" id="energy-analyzer">
+        <div class="section-title-row"><div><div class="eyebrow">06 / ENERGY BALANCE</div><h2>Household energy analyzer</h2><p class="section-subtitle">Compare estimated daily solar generation with household electricity use.</p></div><span class="muted-label">DAILY ENERGY · kWh</span></div>
+        <div class="energy-layout">
+          <article class="panel-card energy-input-card">
+            <div class="card-heading"><div><h3>Daily consumption</h3></div><span class="stat-icon purple-icon">⌂</span></div>
+            <p class="card-description">Enter your estimated daily household electricity use in units (kWh).</p>
+            <label class="field-label" for="demand">Household demand (kWh/day)</label>
+            <div class="number-input-wrap"><input type="number" id="demand" min="0.5" max="200" step="0.5" value="12" /><span>kWh/day</span></div>
+            <div class="quick-values"><button type="button" data-demand="5">Small home · 5</button><button type="button" data-demand="12" class="selected">Typical home · 12</button><button type="button" data-demand="20">Large home · 20</button></div>
+            <div class="energy-mode">
+              <span class="field-label">System scenario</span>
+              <div class="mode-options">
+                <label><input type="radio" name="systemMode" value="grid" checked><span>Grid-connected</span></label>
+                <label><input type="radio" name="systemMode" value="standalone"><span>Standalone</span></label>
+              </div>
+            </div>
+            <div class="battery-field hidden" id="batteryField">
+              <label class="field-label" for="battery">Usable battery energy (kWh)</label>
+              <div class="number-input-wrap"><input type="number" id="battery" min="0" max="100" step="0.5" value="8" /><span>kWh</span></div>
+              <p class="tiny-note">Simplified daily energy buffer estimate; battery charge/discharge losses and timing are not modeled in detail.</p>
+            </div>
+          </article>
+          <article class="panel-card energy-results-card">
+            <div class="energy-result-top"><div><div class="eyebrow">YOUR DAILY ENERGY BALANCE</div><h3 id="balanceTitle">Solar covers your demand</h3><p id="balanceDescription">Estimated solar generation is greater than daily consumption.</p></div><div class="balance-icon">ϟ</div></div>
+            <div class="energy-bar-labels"><span>Solar energy available</span><strong id="solarAvailable">16.0 kWh</strong></div>
+            <div class="energy-bar"><span id="solarBar" style="width:100%"></span></div>
+            <div class="energy-bar-labels"><span>Household energy demand</span><strong id="demandLabel">12.0 kWh</strong></div>
+            <div class="energy-bar demand-bar"><span id="demandBar" style="width:75%"></span></div>
+            <div class="balance-metrics">
+              <div><span id="metricOneLabel">Estimated self-used solar</span><strong id="metricOne">12.0 <small>kWh</small></strong></div>
+              <div><span id="metricTwoLabel">Potential surplus export</span><strong id="metricTwo">4.0 <small>kWh</small></strong></div>
+              <div><span id="metricThreeLabel">Grid energy needed</span><strong id="metricThree">0.0 <small>kWh</small></strong></div>
+            </div>
+            <div class="balance-disclaimer" id="balanceDisclaimer">Daily totals do not show when energy is generated or used. Real self-consumption depends on the timing of solar production and demand.</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block final-note">
+        <div class="note-symbol">✦</div><div><strong>Model responsibly. Interpret wisely.</strong><p>SolarSmart is an educational simulator. Actual performance depends on location, weather, orientation, shading, equipment, wiring, and load timing. Do not use these estimates alone to design or approve a real electrical installation.</p></div>
+        <button class="outline-button" id="downloadReport">↓ Export results CSV</button>
+      </section>
+      <footer class="footer"><span>Copyrights © 2026 SolarSmart, All Rights Reserved.</span><span>Made By Kanha Padhi <span class="footer-heart">✦</span></span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
