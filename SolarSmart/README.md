@@ -16,7 +16,7 @@ A static, front-end-only educational solar PV simulator made with HTML, CSS, and
 You can also open `index.html` directly in a browser; Live Server is recommended for a consistent local workflow.
 
 ## Deploy to Netlify
-1. Visit https://SolarSmart.netlify.app .
+1. Visit https://SolarSmart1.0.netlify.app .
 
 ## Model assumptions and limitations
 - Solar power is estimated as rated capacity × irradiance/1000 × temperature factor × additional system performance factor.
