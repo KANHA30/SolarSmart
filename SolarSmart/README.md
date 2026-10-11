@@ -16,11 +16,7 @@ A static, front-end-only educational solar PV simulator made with HTML, CSS, and
 You can also open `index.html` directly in a browser; Live Server is recommended for a consistent local workflow.
 
 ## Deploy to Netlify
-1. Test the website locally.
-2. Visit https://app.netlify.com/ and sign in.
-3. From the Netlify dashboard, choose **Add new site** / **Deploy manually** (the exact wording can vary).
-4. Drag the `SolarSmart` project folder—or a ZIP containing the files at the ZIP root—into the manual deploy area.
-5. Netlify publishes the static site and provides a URL. No build command or publish directory is needed for this simple static project.
+1. Visit https://SolarSmart.netlify.app .
 
 ## Model assumptions and limitations
 - Solar power is estimated as rated capacity × irradiance/1000 × temperature factor × additional system performance factor.
